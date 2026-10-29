@@ -201,29 +201,179 @@ function pdfWrap(str,maxChars){const words=String(str||"").replace(/\r/g,"").spl
 function pdfBytesFromDataUrl(dataUrl){const b64=String(dataUrl||"").split(",")[1]||"";const bin=atob(b64);return bin}
 function jpegSize(bin){for(let i=0;i<bin.length-9;i++){if(bin.charCodeAt(i)!==0xFF)continue;const marker=bin.charCodeAt(i+1);if(marker>=0xC0&&marker<=0xC3||marker>=0xC5&&marker<=0xC7||marker>=0xC9&&marker<=0xCB||marker>=0xCD&&marker<=0xCF){return{w:(bin.charCodeAt(i+5)<<8)|bin.charCodeAt(i+6),h:(bin.charCodeAt(i+3)<<8)|bin.charCodeAt(i+4)}}}return{w:1,h:1}}
 function makePdfReport(){
- readForm();const r=current;const W=595.28,H=841.89,margin=36,bottom=42;let objects=["","",'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'];const catalog=1,pagesObj=2,fontObj=3,pageRefs=[];
- function addObj(v=""){objects.push(v);return objects.length}
- function text(cmd,x,y,size,str,bold=false){cmd.push(`BT /F1 ${size} Tf ${x.toFixed(2)} ${y.toFixed(2)} Td <${pdfEsc(str)}> Tj ET`)}
- function line(cmd,x1,y1,x2,y2){cmd.push(`${x1.toFixed(2)} ${y1.toFixed(2)} m ${x2.toFixed(2)} ${y2.toFixed(2)} l S`)}
- function rect(cmd,x,y,w,h,fill=false){if(fill)cmd.push(`0.13 0.29 0.47 rg ${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f 0 0 0 rg`);else cmd.push(`${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re S`)}
- function addPage(cmd,images=[]){const content=cmd.join("\n");const cobj=addObj(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`);const imgRefs=[];for(const im of images){const io=addObj(`<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.bin.length} >>\nstream\n${im.bin}\nendstream`);imgRefs.push({name:im.name,obj:io})}let res=`<< /Font << /F1 ${fontObj} 0 R >>`;if(imgRefs.length){res+=` /XObject << ${imgRefs.map(i=>`/${i.name} ${i.obj} 0 R`).join(" ")} >>`}res+=" >>";const po=addObj(`<< /Type /Page /Parent ${pagesObj} 0 R /MediaBox [0 0 ${W} ${H}] /Resources ${res} /Contents ${cobj} 0 R >>`);pageRefs.push(po);return po}
- function header(cmd,title,subtitle){rect(cmd,0,H-68,W,68,true);text(cmd,margin,H-38,20,title,true);if(subtitle)text(cmd,margin,H-56,9,subtitle,false);cmd.push("0 0 0 rg")}
- let cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"}${r.number?"  ·  N° "+r.number:""}`);let y=H-92;
- const meta=[r.date?`Date : ${r.date}`:"",r.tech?`Technicien : ${r.tech}`:"",r.place?`Lieu : ${r.place}`:""].filter(Boolean).join("   |   ");if(meta){text(cmd,margin,y,9,meta,true);y-=18}
- if(r.context){text(cmd,margin,y,10,"Contexte",true);y-=13;for(const ln of pdfWrap(r.context,92)){text(cmd,margin,y,9,ln);y-=12}}
- if(r.notes){text(cmd,margin,y,10,"Notes générales",true);y-=13;for(const ln of pdfWrap(r.notes,92)){text(cmd,margin,y,9,ln);y-=12}}
- function table(cmd,headers,rows,widths){const x0=margin;const rowH=18;let x=x0;cmd.push("0.13 0.29 0.47 rg");for(let i=0;i<headers.length;i++){cmd.push(`${x.toFixed(2)} ${(y-rowH+5).toFixed(2)} ${widths[i].toFixed(2)} ${rowH.toFixed(2)} re f`);x+=widths[i]}cmd.push("0 0 0 rg");x=x0;for(let i=0;i<headers.length;i++){text(cmd,x+4,y-8,8,headers[i],true);x+=widths[i]}y-=rowH;for(const row of rows){const wrapped=row.map((v,i)=>pdfWrap(v,Math.max(8,Math.floor(widths[i]/4.2))));const lines=Math.max(...wrapped.map(a=>a.length));const h=Math.max(rowH,lines*11+7);if(y-h<bottom){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-92;table(cmd,headers,rows.slice(0,0),widths);}
- let xx=x0;for(let i=0;i<row.length;i++){rect(cmd,xx,y-h,widths[i],h,false);for(let j=0;j<wrapped[i].length;j++)text(cmd,xx+4,y-11-j*11,7.5,wrapped[i][j]);xx+=widths[i]}y-=h}}
- if(r.points.length){text(cmd,margin,y,12,"Équipements / points contrôlés",true);y-=16;table(cmd,["Équipement / Point contrôlé","État","Constat / Action à réaliser"],r.points.map(p=>[p.equip,p.state,p.text]),[145,105,269])}
- if(r.measures.length){if(y<150){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-92}text(cmd,margin,y,12,"Relevés / mesures",true);y-=16;table(cmd,["Équipement","Mesure","Valeur","Unité","Résultat"],r.measures.map(m=>[m.equip,m.name,m.value,m.unit,m.result]),[105,105,70,55,184])}
- if(r.summary){if(y<120){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-92}text(cmd,margin,y,12,"Synthèse des actions prioritaires",true);y-=16;for(const ln of String(r.summary).split(/\r?\n/)){for(const w of pdfWrap(ln,92)){text(cmd,margin,y,9,w);y-=12}}}
- if(r.supplies){if(y<120){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-92}text(cmd,margin,y,12,"Devis / Fournitures à prévoir",true);y-=16;for(const ln of String(r.supplies).split(/\r?\n/)){for(const w of pdfWrap(ln,92)){text(cmd,margin,y,9,w);y-=12}}}
- addPage(cmd);
- // Photos, two per page. Rebuild photo pages separately.
- let photoIndex=0;while(photoIndex<r.photos.length){cmd=[];const images=[];header(cmd,"PHOTOGRAPHIES",`Navire : ${r.ship||"Sans nom"}`);let yy=H-98;for(let slot=0;slot<2&&photoIndex<r.photos.length;slot++,photoIndex++){const p=r.photos[photoIndex],bin=pdfBytesFromDataUrl(p.src),sz=jpegSize(bin),name="Im"+(slot+1);images.push({name,bin,w:sz.w,h:sz.h});const maxW=245,maxH=315,scale=Math.min(maxW/sz.w,maxH/sz.h);const iw=sz.w*scale,ih=sz.h*scale;const xx=margin+(maxW-iw)/2;cmd.push(`q ${iw.toFixed(2)} 0 0 ${ih.toFixed(2)} ${xx.toFixed(2)} ${(yy-ih).toFixed(2)} cm /${name} Do Q`);text(cmd,margin,yy-ih-15,8,`Photo ${photoIndex+1}${p.caption?" – "+p.caption:""}`);yy-=Math.max(ih+35,350)}addPage(cmd,images)}
- objects[0]=`<< /Type /Catalog /Pages ${pagesObj} 0 R >>`;objects[1]=`<< /Type /Pages /Kids [${pageRefs.map(n=>n+" 0 R").join(" ")}] /Count ${pageRefs.length} >>`;
- let pdf="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n",offsets=[0];for(let i=1;i<=objects.length;i++){offsets[i]=pdf.length;pdf+=`${i} 0 obj\n${objects[i-1]}\nendobj\n`}const xref=pdf.length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`;for(let i=1;i<offsets.length;i++)pdf+=String(offsets[i]).padStart(10,"0")+" 00000 n \n";pdf+=`trailer\n<< /Size ${objects.length+1} /Root ${catalog} 0 R >>\nstartxref\n${xref}\n%%EOF`;
- const bytes=new Uint8Array(pdf.length);for(let i=0;i<pdf.length;i++)bytes[i]=pdf.charCodeAt(i)&255;return new Blob([bytes],{type:"application/pdf"});
+  readForm();
+  const r=current;
+  const W=595.28,H=841.89,margin=38,bottom=48,contentW=W-margin*2;
+  let objects=["","",'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'];
+  const catalog=1,pagesObj=2,fontObj=3,fontBoldObj=4,pageRefs=[];
+  const pageData=[];
+
+  function addObj(v=""){objects.push(v);return objects.length}
+  function text(cmd,x,y,size,str,bold=false){
+    const safe=String(str??"");
+    cmd.push(`BT /F${bold?2:1} ${size} Tf ${x.toFixed(2)} ${y.toFixed(2)} Td <${pdfEsc(safe)}> Tj ET`);
+  }
+  function line(cmd,x1,y1,x2,y2){cmd.push(`${x1.toFixed(2)} ${y1.toFixed(2)} m ${x2.toFixed(2)} ${y2.toFixed(2)} l S`)}
+  function fillRect(cmd,x,y,w,h,gray=0.95){cmd.push(`${gray} ${gray} ${gray} rg ${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f 0 0 0 rg`)}
+  function blueRect(cmd,x,y,w,h){cmd.push(`0.13 0.29 0.47 rg ${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re f 0 0 0 rg`)}
+  function strokeRect(cmd,x,y,w,h){cmd.push(`${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re S`)}
+  function wrap(str,maxChars){return pdfWrap(String(str||""),maxChars)}
+  function displayState(s){return String(s||"").replace(/^✓\s*/,'').replace(/^\?\s*/,'') || ""}
+
+  function addPage(cmd,images=[],photoPage=false){pageData.push({cmd:[...cmd],images,photoPage})}
+  function header(cmd,title,subtitle){
+    blueRect(cmd,0,H-72,W,72);
+    cmd.push("1 1 1 rg");
+    text(cmd,margin,H-37,19,title,true);
+    if(subtitle)text(cmd,margin,H-57,9,subtitle,false);
+    cmd.push("0 0 0 rg");
+  }
+  function footer(cmd,page,total){
+    cmd.push("0.72 0.76 0.80 RG");line(cmd,margin,31,W-margin,31);cmd.push("0 0 0 rg");
+    text(cmd,margin,18,7.5,`Rapport d’intervention${r.ship?" · "+r.ship:""}`);
+    text(cmd,W-margin-65,18,7.5,`Page ${page} / ${total}`);
+  }
+
+  function tablePage(cmd,headers,rows,widths,stateCol=-1){
+    let y=cmd._y;
+    const x0=margin,rowHeaderH=24;
+    blueRect(cmd,x0,y-rowHeaderH,contentW,rowHeaderH);
+    let xx=x0;
+    headers.forEach((h,i)=>{text(cmd,xx+5,y-15,8.2,h,true);xx+=widths[i]});
+    y-=rowHeaderH;
+    for(const row of rows){
+      const wrapped=row.map((v,i)=>wrap(v,Math.max(8,Math.floor(widths[i]/4.0))));
+      const lines=Math.max(1,...wrapped.map(a=>a.length));
+      const h=Math.max(27,lines*10.5+10);
+      if(y-h<bottom+12){
+        cmd._y=y; return {remaining:rows.slice(rows.indexOf(row)),newPage:true};
+      }
+      if((rows.indexOf(row))%2===1)fillRect(cmd,x0,y-h,contentW,h,0.975);
+      xx=x0;
+      for(let i=0;i<row.length;i++){
+        strokeRect(cmd,xx,y-h,widths[i],h);
+        const vals=wrapped[i];
+        for(let j=0;j<vals.length;j++){
+          let val=vals[j];
+          text(cmd,xx+5,y-15-j*10.5,7.6,val,i===stateCol);
+        }
+        xx+=widths[i];
+      }
+      y-=h;
+    }
+    cmd._y=y;
+    return {remaining:[],newPage:false};
+  }
+
+  // ---- Pages de rapport ----
+  let cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"}${r.number?"  ·  N° "+r.number:""}`);let y=H-94;cmd._y=y;
+
+  // Bloc d'informations
+  const meta=[
+    ["DATE",r.date||"—"],["TECHNICIEN",r.tech||"—"],["LIEU",r.place||"—"],["CONTEXTE",r.context||"—"]
+  ];
+  const boxW=(contentW-10)/2, boxH=42;
+  for(let i=0;i<4;i++){
+    const col=i%2,row=Math.floor(i/2),x=margin+col*(boxW+10),yy=y-row*(boxH+8)-boxH;
+    fillRect(cmd,x,yy,boxW,boxH,0.96);strokeRect(cmd,x,yy,boxW,boxH);
+    text(cmd,x+9,yy+27,7.5,meta[i][0],true);
+    for(const [j,ln] of wrap(meta[i][1],45).slice(0,2).entries())text(cmd,x+9,yy+13-j*9,8.5,ln);
+  }
+  y-=2*(boxH+8)+6;
+
+  if(r.notes){
+    text(cmd,margin,y,11,"Notes générales",true);y-=14;
+    for(const ln of wrap(r.notes,94)){text(cmd,margin,y,8.5,ln);y-=11}
+    y-=4;
+  }
+
+  if(r.points.length){
+    text(cmd,margin,y,12,"Équipements / points contrôlés",true);y-=16;cmd._y=y;
+    let remaining=r.points.map(p=>[p.equip,displayState(p.state),p.text]);
+    const widths=[142,105,contentW-247];
+    while(remaining.length){
+      const result=tablePage(cmd,["Équipement / Point contrôlé","État","Constat / Action à réaliser"],remaining,widths,1);
+      remaining=result.remaining;
+      if(result.newPage){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-94;cmd._y=y;}
+    }
+    y=cmd._y-18;
+  }
+
+  if(r.measures.length){
+    if(y<150){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-94;cmd._y=y;}
+    text(cmd,margin,y,12,"Relevés / mesures",true);y-=16;cmd._y=y;
+    let remaining=r.measures.map(m=>[m.equip,m.name,m.value,m.unit,m.result]);
+    const widths=[95,108,68,55,contentW-326];
+    while(remaining.length){
+      const result=tablePage(cmd,["Équipement","Mesure","Valeur","Unité","Conditions / résultat"],remaining,widths,2);
+      remaining=result.remaining;
+      if(result.newPage){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-94;cmd._y=y;}
+    }
+    y=cmd._y-18;
+  }
+
+  function sectionBox(title,body){
+    if(!body)return;
+    if(y<145){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-94;cmd._y=y;}
+    text(cmd,margin,y,11.5,title,true);y-=14;
+    const lines=String(body).split(/\r?\n/).flatMap(x=>wrap(x,94));
+    const h=Math.max(34,lines.length*11+16);
+    if(y-h<bottom+10){addPage(cmd);cmd=[];header(cmd,"RAPPORT D’INTERVENTION",`Navire : ${r.ship||"Sans nom"} — suite`);y=H-94;cmd._y=y;return sectionBox(title,body)}
+    fillRect(cmd,margin,y-h,contentW,h,0.975);strokeRect(cmd,margin,y-h,contentW,h);
+    let yy=y-14;for(const ln of lines){text(cmd,margin+10,yy,8.5,ln);yy-=11}
+    y-=h+14;cmd._y=y;
+  }
+  sectionBox("Synthèse des actions prioritaires",r.summary);
+  sectionBox("Devis / Fournitures à prévoir",r.supplies);
+  addPage(cmd);
+
+  // ---- Pages photos : 2 photos maximum par page ----
+  for(let i=0;i<r.photos.length;i+=2){
+    cmd=[];header(cmd,"PHOTOGRAPHIES",`Navire : ${r.ship||"Sans nom"}${r.number?"  ·  N° "+r.number:""}`);
+    const images=[];let yy=H-100;
+    for(let slot=0;slot<2&&i+slot<r.photos.length;slot++){
+      const p=r.photos[i+slot],bin=pdfBytesFromDataUrl(p.src),sz=jpegSize(bin),name="Im"+(slot+1);
+      images.push({name,bin,w:sz.w,h:sz.h});
+      const frameX=margin,frameY=yy-305,frameW=contentW,frameH=275;
+      fillRect(cmd,frameX,frameY,frameW,frameH,0.975);strokeRect(cmd,frameX,frameY,frameW,frameH);
+      const maxW=frameW-18,maxH=frameH-18,scale=Math.min(maxW/sz.w,maxH/sz.h);
+      const iw=sz.w*scale,ih=sz.h*scale,xx=frameX+(frameW-iw)/2,iy=frameY+(frameH-ih)/2;
+      cmd.push(`q ${iw.toFixed(2)} 0 0 ${ih.toFixed(2)} ${xx.toFixed(2)} ${iy.toFixed(2)} cm /${name} Do Q`);
+      text(cmd,frameX,frameY-15,8.5,`Photo ${i+slot+1}${p.caption?" — "+p.caption:""}`,true);
+      yy=frameY-35;
+    }
+    addPage(cmd,images,true);
+  }
+
+  // Si aucune photo, on ne crée pas de page vide supplémentaire.
+  if(r.photos.length===0 && pageData.length && pageData[pageData.length-1].cmd.length===0)pageData.pop();
+
+  const total=pageData.length;
+  for(let i=0;i<pageData.length;i++){
+    footer(pageData[i].cmd,i+1,total);
+    const content=pageData[i].cmd.join("\n");
+    const cobj=addObj(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`);
+    const imgRefs=[];
+    for(const im of pageData[i].images||[]){
+      const io=addObj(`<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.bin.length} >>\nstream\n${im.bin}\nendstream`);
+      imgRefs.push({name:im.name,obj:io});
+    }
+    let res=`<< /Font << /F1 ${fontObj} 0 R /F2 ${fontBoldObj} 0 R >>`;
+    if(imgRefs.length)res+=` /XObject << ${imgRefs.map(x=>`/${x.name} ${x.obj} 0 R`).join(" ")} >>`;
+    res+=" >>";
+    const po=addObj(`<< /Type /Page /Parent ${pagesObj} 0 R /MediaBox [0 0 ${W} ${H}] /Resources ${res} /Contents ${cobj} 0 R >>`);
+    pageRefs.push(po);
+  }
+
+  objects[0]=`<< /Type /Catalog /Pages ${pagesObj} 0 R >>`;
+  objects[1]=`<< /Type /Pages /Kids [${pageRefs.map(n=>n+" 0 R").join(" ")}] /Count ${pageRefs.length} >>`;
+  let pdf="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n",offsets=[0];
+  for(let i=1;i<=objects.length;i++){offsets[i]=pdf.length;pdf+=`${i} 0 obj\n${objects[i-1]}\nendobj\n`}
+  const xref=pdf.length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`;
+  for(let i=1;i<offsets.length;i++)pdf+=String(offsets[i]).padStart(10,"0")+" 00000 n \n";
+  pdf+=`trailer\n<< /Size ${objects.length+1} /Root ${catalog} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  const bytes=new Uint8Array(pdf.length);for(let i=0;i<pdf.length;i++)bytes[i]=pdf.charCodeAt(i)&255;
+  return new Blob([bytes],{type:"application/pdf"});
 }
 async function printCurrent(){
   try{
