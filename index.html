@@ -223,9 +223,39 @@ function makePdfReport(){
  let photoIndex=0;while(photoIndex<r.photos.length){cmd=[];const images=[];header(cmd,"PHOTOGRAPHIES",`Navire : ${r.ship||"Sans nom"}`);let yy=H-98;for(let slot=0;slot<2&&photoIndex<r.photos.length;slot++,photoIndex++){const p=r.photos[photoIndex],bin=pdfBytesFromDataUrl(p.src),sz=jpegSize(bin),name="Im"+(slot+1);images.push({name,bin,w:sz.w,h:sz.h});const maxW=245,maxH=315,scale=Math.min(maxW/sz.w,maxH/sz.h);const iw=sz.w*scale,ih=sz.h*scale;const xx=margin+(maxW-iw)/2;cmd.push(`q ${iw.toFixed(2)} 0 0 ${ih.toFixed(2)} ${xx.toFixed(2)} ${(yy-ih).toFixed(2)} cm /${name} Do Q`);text(cmd,margin,yy-ih-15,8,`Photo ${photoIndex+1}${p.caption?" – "+p.caption:""}`);yy-=Math.max(ih+35,350)}addPage(cmd,images)}
  objects[0]=`<< /Type /Catalog /Pages ${pagesObj} 0 R >>`;objects[1]=`<< /Type /Pages /Kids [${pageRefs.map(n=>n+" 0 R").join(" ")}] /Count ${pageRefs.length} >>`;
  let pdf="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n",offsets=[0];for(let i=1;i<=objects.length;i++){offsets[i]=pdf.length;pdf+=`${i} 0 obj\n${objects[i-1]}\nendobj\n`}const xref=pdf.length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`;for(let i=1;i<offsets.length;i++)pdf+=String(offsets[i]).padStart(10,"0")+" 00000 n \n";pdf+=`trailer\n<< /Size ${objects.length+1} /Root ${catalog} 0 R >>\nstartxref\n${xref}\n%%EOF`;
- const bytes=new Uint8Array(pdf.length);for(let i=0;i<pdf.length;i++)bytes[i]=pdf.charCodeAt(i)&255;const blob=new Blob([bytes],{type:"application/pdf"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`Rapport_${(r.ship||"intervention").replace(/[^a-z0-9_-]+/gi,"_")}_${r.date||""}.pdf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);alert("PDF généré. Il est disponible dans les téléchargements / fichiers de l’iPhone.")
+ const bytes=new Uint8Array(pdf.length);for(let i=0;i<pdf.length;i++)bytes[i]=pdf.charCodeAt(i)&255;return new Blob([bytes],{type:"application/pdf"});
 }
-function printCurrent(){try{makePdfReport()}catch(e){console.error(e);buildPrint();setTimeout(()=>window.print(),50)}}
+async function printCurrent(){
+  try{
+    const blob=makePdfReport();
+    if(!blob) throw new Error("Le PDF n’a pas pu être créé.");
+    const name=`Rapport_${(current.ship||"intervention").replace(/[^a-z0-9_-]+/gi,"_")}_${current.date||""}.pdf`;
+    const file=new File([blob],name,{type:"application/pdf"});
+    // Sur iPhone/iPad, privilégier la feuille de partage native :
+    // elle permet d'enregistrer directement dans Fichiers, Messages, Mail, etc.
+    if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
+      try{
+        await navigator.share({title:"Rapport d’intervention",text:`Rapport ${current.ship||""}`,files:[file]});
+        return;
+      }catch(e){
+        // Annulation de la feuille de partage : ne rien signaler comme erreur.
+        if(e && e.name === "AbortError") return;
+      }
+    }
+    const url=URL.createObjectURL(blob);
+    const w=window.open(url,"_blank");
+    if(!w){
+      const a=document.createElement("a");
+      a.href=url;a.download=name;a.target="_blank";
+      document.body.appendChild(a);a.click();a.remove();
+    }
+    setTimeout(()=>URL.revokeObjectURL(url),120000);
+  }catch(e){
+    console.error(e);
+    alert("Impossible de générer le PDF.\n\nErreur : "+(e?.message||e));
+  }
+}
+
 async function addBoat(){const n=prompt("Nom du bateau");if(!n)return;const b={id:uid(),name:n.trim()};await put("boats",b);boats=await getAll("boats");fillBoats();openBoats()}
 async function openBoats(){$("home").classList.add("hidden");$("editor").classList.add("hidden");$("boats").classList.remove("hidden");$("boatRows").innerHTML=boats.map(b=>`<div class="card"><b>${esc(b.name)}</b><button class="danger small" style="float:right" onclick="deleteBoat('${b.id}')">Supprimer</button></div>`).join("")||"<p class='muted'>Aucun bateau enregistré.</p>"}
 async function deleteBoat(id){if(confirm("Supprimer ce bateau ?")){await del("boats",id);boats=await getAll("boats");fillBoats();openBoats()}}
