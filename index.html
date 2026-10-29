@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#234a78">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Rapports">
+<link rel="manifest" href="manifest.json">
+<title>Rapports d’intervention</title>
+<style>
+:root{--navy:#234a78;--navy2:#173756;--light:#e5edf5;--bg:#f3f5f7;--card:#fff;--text:#17212b;--muted:#65717d;--border:#d3dbe3;--ok:#e6f2e9;--warn:#fff1d7;--danger:#fae7e7}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:var(--navy);color:#fff;padding:18px 16px calc(14px + env(safe-area-inset-top));position:sticky;top:0;z-index:20}
+header h1{margin:0;font-size:21px}header .sub{font-size:12px;opacity:.86;margin-top:3px}
+main{max-width:980px;margin:auto;padding:12px 12px 40px}.card{background:var(--card);border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:0 2px 12px #0000000b}
+h2{color:var(--navy);font-size:17px;margin:0 0 10px}h3{font-size:14px;margin:14px 0 7px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+label{display:block;font-weight:700;font-size:12px;margin:8px 0 5px}
+input,textarea,select{width:100%;border:1px solid var(--border);border-radius:10px;background:#fff;padding:11px;font:inherit;color:inherit}textarea{min-height:85px;resize:vertical}
+button{border:0;border-radius:11px;padding:11px 14px;font:inherit;font-weight:750;cursor:pointer}.primary{background:var(--navy);color:#fff}.secondary{background:#edf1f5}.danger{background:var(--danger);color:#8e1f1f}.small{padding:7px 9px;font-size:12px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}.muted{color:var(--muted);font-size:12px}.hidden{display:none!important}
+.report-row{display:flex;justify-content:space-between;gap:10px;align-items:center}.report-row strong{font-size:16px}.report-row p{margin:4px 0;color:var(--muted);font-size:12px}
+.badge{display:inline-block;padding:5px 8px;border-radius:8px;font-size:10px;font-weight:800;background:var(--light)}
+.ok{background:var(--ok)}.warn{background:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:12px}th{background:var(--navy);color:#fff;text-align:left;padding:8px}td{border:1px solid var(--border);padding:6px;vertical-align:top}td input,td textarea,td select{border:0;padding:5px;background:transparent;border-radius:5px;min-width:100px}
+.photo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.photo-card{border:1px solid var(--border);border-radius:11px;padding:7px;background:#fafafa}.photo-card img{width:100%;height:155px;object-fit:cover;border-radius:7px}.photo-card input{margin-top:6px;padding:7px;font-size:11px}
+.tabs{display:flex;gap:5px;overflow:auto;margin:-2px 0 12px}.tab{white-space:nowrap;background:#e9eef3}.tab.active{background:var(--navy);color:#fff}
+.voice{background:#eef4fb;color:var(--navy);margin-top:5px}.voice.listening{background:#ffdede;color:#9d1c1c}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.kpi div{background:#f5f7f9;border-radius:11px;padding:10px}.kpi b{display:block;font-size:20px;color:var(--navy)}.kpi span{font-size:11px;color:var(--muted)}
+.preview{background:white;padding:20px;border:1px solid #ddd}
+.print-only{display:none}
+@media(max-width:650px){.grid2,.grid3{grid-template-columns:1fr}.photo-grid{grid-template-columns:1fr 1fr}}
+@media print{
+@page{size:A4 portrait;margin:12mm}
+body{background:#fff}.no-print,header{display:none!important}.print-only{display:block}.screen-only{display:none!important}
+main{max-width:none;padding:0}.card{box-shadow:none;border-radius:0;padding:0;margin:0 0 12px}
+.print-page{page-break-after:always}.print-page:last-child{page-break-after:auto}
+.print-table th{background:#234a78!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.print-photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.print-photo img{width:100%;height:105mm;object-fit:contain}
+.print-title{text-align:center;font-size:25px;font-weight:900;margin:0 0 5px}.print-ship{text-align:center;font-size:16px;margin-bottom:18px}
+.print-section{color:#234a78;font-weight:900;font-size:17px;margin:16px 0 7px}
+}
+</style>
+</head>
+<body>
+<header><h1>RAPPORTS D’INTERVENTION</h1><div class="sub">Application terrain – marine / maintenance</div></header>
+<main>
+<section id="home">
+  <div class="card no-print">
+    <div class="actions">
+      <button class="primary" onclick="newReport()">＋ Nouveau rapport</button>
+      <button class="secondary" onclick="openBoats()">🚤 Bateaux</button>
+      <button class="secondary" onclick="exportAll()">↗ Sauvegarde</button>
+      <label class="secondary" style="margin:0;display:flex;align-items:center;gap:6px">↙ Restaurer <input type="file" accept=".json" onchange="importAll(event)" style="display:none"></label>
+    </div>
+  </div>
+  <div class="card no-print">
+    <div class="kpi"><div><b id="kAll">0</b><span>Rapports</span></div><div><b id="kTodo">0</b><span>Actions à traiter</span></div><div><b id="kPhotos">0</b><span>Photos</span></div></div>
+  </div>
+  <div class="card no-print"><input id="search" placeholder="Rechercher : navire, équipement, constat…" oninput="renderHome()"></div>
+  <div id="reportList"></div>
+</section>
+
+<section id="editor" class="hidden">
+  <div class="actions no-print" style="margin-bottom:10px">
+    <button class="secondary" onclick="goHome()">← Rapports</button>
+    <button class="primary" onclick="saveCurrent()">Enregistrer</button>
+    <button class="secondary" onclick="printCurrent()">PDF / Imprimer</button>
+  </div>
+  <div class="tabs no-print">
+    <button class="tab active" onclick="tab(0)">1. Infos</button><button class="tab" onclick="tab(1)">2. Points</button>
+    <button class="tab" onclick="tab(2)">3. Mesures</button><button class="tab" onclick="tab(3)">4. Photos</button>
+    <button class="tab" onclick="tab(4)">5. Synthèse</button>
+  </div>
+
+  <div class="tabpage">
+    <div class="card"><h2>Informations du rapport</h2>
+      <div class="grid2"><div><label>Navire</label><input id="ship" list="boatList"><datalist id="boatList"></datalist></div><div><label>N° rapport</label><input id="number" placeholder="Ex. 2026-001"></div></div>
+      <div class="grid3"><div><label>Date</label><input id="date" type="date"></div><div><label>Technicien</label><input id="tech"></div><div><label>Lieu</label><input id="place"></div></div>
+      <label>Contexte</label><textarea id="context" placeholder="Ex. Le bateau sort sur Porquerolles début novembre…"></textarea>
+      <label>Notes générales</label><textarea id="notes"></textarea>
+    </div>
+  </div>
+
+  <div class="tabpage hidden">
+    <div class="card"><h2>Équipements / points contrôlés</h2>
+      <div class="actions no-print"><button class="primary" onclick="addPoint()">＋ Ajouter</button><button class="secondary" onclick="presetPoint()">Équipement courant</button><button class="secondary" onclick="sortPoints()">Trier par état</button></div>
+      <div style="overflow:auto;margin-top:10px"><table id="pointsTable"><thead><tr><th style="width:22%">Équipement / Point contrôlé</th><th style="width:24%">État</th><th>Constat / Action à réaliser</th><th class="no-print"></th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="tabpage hidden">
+    <div class="card"><h2>Relevés / mesures</h2>
+      <p class="muted">Ajoute les valeurs utiles : tension, isolement, intensité, résistance, température, etc.</p>
+      <div class="actions no-print"><button class="primary" onclick="addMeasure()">＋ Ajouter une mesure</button></div>
+      <div style="overflow:auto;margin-top:10px"><table id="measureTable"><thead><tr><th>Équipement</th><th>Mesure</th><th>Valeur</th><th>Unité</th><th>Conditions / résultat</th><th></th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="tabpage hidden">
+    <div class="card"><h2>Photographies</h2><p class="muted">Les photos sont compressées et conservées localement dans le navigateur.</p>
+      <div class="actions no-print"><button class="primary" onclick="photoInput.click()">＋ Prendre / ajouter des photos</button></div>
+      <input id="photoInput" type="file" accept="image/*" capture="environment" multiple class="hidden" onchange="addPhotoFiles(event)">
+      <div id="photoGrid" class="photo-grid" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div class="tabpage hidden">
+    <div class="card"><h2>Synthèse des actions prioritaires</h2>
+      <textarea id="summary" placeholder="Synthèse du rapport…"></textarea>
+      <div class="actions no-print"><button class="secondary" onclick="generateSummary()">Générer automatiquement</button></div>
+    </div>
+    <div class="card"><h2>Devis / Fournitures à prévoir</h2><textarea id="supplies" placeholder="Pièces, matériel, quantités, devis à établir…"></textarea></div>
+    <div class="card no-print"><h2>Actions rapides</h2>
+      <div class="actions"><button class="secondary" onclick="duplicateCurrent()">Dupliquer</button><button class="secondary" onclick="saveCurrent(true)">Enregistrer une copie</button><button class="danger" onclick="deleteCurrent()">Supprimer</button></div>
+    </div>
+  </div>
+
+  <div id="printArea" class="print-only"></div>
+</section>
+
+<section id="boats" class="hidden">
+  <div class="actions no-print"><button class="secondary" onclick="goHome()">← Retour</button><button class="primary" onclick="addBoat()">＋ Nouveau bateau</button></div>
+  <div class="card no-print"><h2>Bateaux enregistrés</h2><div id="boatRows"></div></div>
+</section>
+</main>
+
+<script>
+const DB_NAME="RI_V4", DB_VER=1;
+let db, current=null, boats=[], reports=[], currentTab=0, recognition=null;
+const STATES=["✓ RÉALISÉ","À TRAITER EN 2026","À TRAITER EN 2027","À TRAITER AVANT LA SORTIE À PORQUEROLLES","À TRAITER PENDANT LA SORTIE","À SURVEILLER","À CHIFFRER","EN ATTENTE PIÈCES"];
+const PRESETS=["Commande coupe-batterie","Prise de quai","Cosses batterie","Couplage des parcs batteries de démarrage","Alimentation de secours centrale incendie","Relevé d’isolement","Changement câbles","Platine pupitre moteur","Prise USB pupitre moteur","Alimentation essuie-glaces","Éclairage salle","Éclairage machine 24 V","Éclairage machine 230 V","Batteries","Chargeur batteries","Groupe électrogène","Tableau électrique","Pompe","Climatisation / VRF","Ventilation","Prise de service","Prise USB","Feux de navigation","Avertisseur sonore","Pompe de cale","Guindeau","Propulseur","Treuil","Barre / angle de barre","Instrumentation moteur"];
+const $=id=>document.getElementById(id);
+function uid(){return Date.now()+"_"+Math.random().toString(16).slice(2)}
+function esc(s){return String(s??"").replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]))}
+function attr(s){return esc(s).replace(/"/g,"&quot;")}
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains("reports"))d.createObjectStore("reports",{keyPath:"id"});if(!d.objectStoreNames.contains("boats"))d.createObjectStore("boats",{keyPath:"id"})};r.onsuccess=e=>{db=e.target.result;res()};r.onerror=()=>rej(r.error)})}
+function store(name,mode="readonly"){return db.transaction(name,mode).objectStore(name)}
+async function getAll(name){return new Promise((res,rej)=>{let r=store(name).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function put(name,obj){return new Promise((res,rej)=>{let r=store(name,"readwrite").put(obj);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+async function del(name,id){return new Promise((res,rej)=>{let r=store(name,"readwrite").delete(id);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+function blank(){return {id:uid(),ship:"",number:"",date:new Date().toISOString().slice(0,10),tech:"",place:"",context:"",notes:"",points:[],measures:[],photos:[],summary:"",supplies:"",created:new Date().toISOString(),updated:new Date().toISOString()}}
+async function init(){await openDB();reports=await getAll("reports");boats=await getAll("boats");fillBoats();renderHome()}
+function fillBoats(){$("boatList").innerHTML=boats.map(b=>`<option value="${attr(b.name)}">`).join("")}
+function newReport(){current=blank();showEditor();renderEditor()}
+function showEditor(){$("home").classList.add("hidden");$("boats").classList.add("hidden");$("editor").classList.remove("hidden");scrollTo(0,0)}
+function goHome(){$("editor").classList.add("hidden");$("boats").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
+async function editReport(id){current=JSON.parse(JSON.stringify(reports.find(x=>x.id===id)));showEditor();renderEditor()}
+function renderHome(){
+ const q=($("search").value||"").toLowerCase();
+ const arr=reports.filter(r=>(r.ship+" "+r.context+" "+r.notes+" "+r.points.map(p=>p.equip+" "+p.text).join(" ")).toLowerCase().includes(q)).sort((a,b)=>(b.updated||"").localeCompare(a.updated||""));
+ $("kAll").textContent=reports.length;$("kTodo").textContent=reports.reduce((n,r)=>n+r.points.filter(p=>p.state!=="✓ RÉALISÉ").length,0);$("kPhotos").textContent=reports.reduce((n,r)=>n+r.photos.length,0);
+ $("reportList").innerHTML=arr.map(r=>`<div class="card no-print" onclick="editReport('${r.id}')"><div class="report-row"><div><strong>${esc(r.ship||"Sans nom")}</strong><p>${esc(r.date||"")} ${r.number?"· "+esc(r.number):""} · ${r.points.length} point(s) · ${r.photos.length} photo(s)</p></div><span class="badge ${r.points.some(p=>p.state!=="✓ RÉALISÉ")?"warn":"ok"}">${r.points.some(p=>p.state!=="✓ RÉALISÉ")?"À TRAITER":"RÉALISÉ"}</span></div></div>`).join("")||'<div class="card no-print">Aucun rapport.</div>';
+}
+function tab(n){currentTab=n;document.querySelectorAll(".tabpage").forEach((x,i)=>x.classList.toggle("hidden",i!==n));document.querySelectorAll(".tab").forEach((x,i)=>x.classList.toggle("active",i===n))}
+function renderEditor(){
+ $("ship").value=current.ship;$("number").value=current.number;$("date").value=current.date;$("tech").value=current.tech;$("place").value=current.place;$("context").value=current.context;$("notes").value=current.notes;$("summary").value=current.summary;$("supplies").value=current.supplies;
+ $("pointsTable").querySelector("tbody").innerHTML="";current.points.forEach(addPoint);
+ $("measureTable").querySelector("tbody").innerHTML="";current.measures.forEach(addMeasure);
+ renderPhotos();tab(0)
+}
+function addPoint(p={equip:"",state:"✓ RÉALISÉ",text:""}){
+ const tr=document.createElement("tr");tr.innerHTML=`<td><input class="pe" value="${attr(p.equip)}"></td><td><select class="ps">${STATES.map(s=>`<option>${esc(s)}</option>`).join("")}</select></td><td><textarea class="pt">${esc(p.text)}</textarea><button class="voice no-print" onclick="dictate(this)">🎙️ Dictée</button></td><td class="no-print"><button class="danger small" onclick="this.closest('tr').remove()">×</button></td>`;
+ tr.querySelector(".ps").value=p.state||"✓ RÉALISÉ";$("pointsTable").querySelector("tbody").appendChild(tr)
+}
+function presetPoint(){let n=prompt("Choisis ou saisis un équipement :\n\n"+PRESETS.join("\n"));if(n)addPoint({equip:n,state:"✓ RÉALISÉ",text:""})}
+function readPoints(){return [...$("pointsTable").querySelectorAll("tbody tr")].map(tr=>({equip:tr.querySelector(".pe").value,state:tr.querySelector(".ps").value,text:tr.querySelector(".pt").value})).filter(x=>x.equip||x.text)}
+function sortPoints(){let a=readPoints();a.sort((x,y)=>x.state.localeCompare(y.state));$("pointsTable").querySelector("tbody").innerHTML="";a.forEach(addPoint)}
+function addMeasure(m={equip:"",name:"",value:"",unit:"",result:""}){
+ const tr=document.createElement("tr");tr.innerHTML=`<td><input class="me" value="${attr(m.equip)}"></td><td><input class="mn" value="${attr(m.name)}"></td><td><input class="mv" value="${attr(m.value)}"></td><td><input class="mu" value="${attr(m.unit)}"></td><td><input class="mr" value="${attr(m.result)}"></td><td class="no-print"><button class="danger small" onclick="this.closest('tr').remove()">×</button></td>`;$("measureTable").querySelector("tbody").appendChild(tr)
+}
+function readMeasures(){return [...$("measureTable").querySelectorAll("tbody tr")].map(tr=>({equip:tr.querySelector(".me").value,name:tr.querySelector(".mn").value,value:tr.querySelector(".mv").value,unit:tr.querySelector(".mu").value,result:tr.querySelector(".mr").value})).filter(x=>x.equip||x.name||x.value)}
+function resizeImage(file,max=1500,quality=.78){return new Promise(res=>{const rd=new FileReader();rd.onload=e=>{const im=new Image();im.onload=()=>{let w=im.width,h=im.height,scale=Math.min(1,max/Math.max(w,h));w=Math.round(w*scale);h=Math.round(h*scale);const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);res(c.toDataURL("image/jpeg",quality))};im.src=e.target.result};rd.readAsDataURL(file)})}
+async function addPhotoFiles(e){for(const f of [...e.target.files]){const src=await resizeImage(f);current.photos.push({id:uid(),src,caption:""});renderPhotos()}e.target.value=""}
+function renderPhotos(){$("photoGrid").innerHTML=current.photos.map((p,i)=>`<div class="photo-card"><img src="${p.src}"><input value="${attr(p.caption||"")}" placeholder="Légende / constat" oninput="current.photos[${i}].caption=this.value"><button class="danger small no-print" style="margin-top:6px" onclick="current.photos.splice(${i},1);renderPhotos()">Supprimer</button></div>`).join("")}
+function readForm(){current.ship=$("ship").value.trim();current.number=$("number").value.trim();current.date=$("date").value;current.tech=$("tech").value.trim();current.place=$("place").value.trim();current.context=$("context").value;current.notes=$("notes").value;current.summary=$("summary").value;current.supplies=$("supplies").value;current.points=readPoints();current.measures=readMeasures();current.updated=new Date().toISOString()}
+async function saveCurrent(copy=false){readForm();if(copy)current={...JSON.parse(JSON.stringify(current)),id:uid(),number:current.number?current.number+"-COPIE":"",created:new Date().toISOString()};await put("reports",current);reports=await getAll("reports");alert("Rapport enregistré");if(copy)goHome()}
+async function deleteCurrent(){if(confirm("Supprimer ce rapport ?")){await del("reports",current.id);reports=await getAll("reports");goHome()}}
+async function duplicateCurrent(){readForm();current={...JSON.parse(JSON.stringify(current)),id:uid(),number:current.number?current.number+"-COPIE":"",created:new Date().toISOString()};await put("reports",current);reports=await getAll("reports");alert("Copie créée")}
+function generateSummary(){readForm();const groups={};current.points.forEach(p=>(groups[p.state]??=[]).push(p.equip));$("summary").value=Object.entries(groups).map(([k,v])=>`• ${k} : ${v.join(", ")}.`).join("\n")}
+function dictate(btn){
+ if(!("webkitSpeechRecognition" in window||"SpeechRecognition" in window)){alert("La dictée vocale n'est pas disponible dans ce navigateur.");return}
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(recognition){try{recognition.stop()}catch{}}
+ recognition=new SR();recognition.lang="fr-FR";recognition.interimResults=false;recognition.maxAlternatives=1;btn.classList.add("listening");btn.textContent="⏺️ Écoute…";
+ recognition.onresult=e=>{const tr=btn.closest("tr"),ta=tr.querySelector(".pt");ta.value+=(ta.value?" ":"")+e.results[0][0].transcript};recognition.onerror=()=>{};recognition.onend=()=>{btn.classList.remove("listening");btn.textContent="🎙️ Dictée"};recognition.start()
+}
+function buildPrint(){
+ readForm();const r=current, pages=[];let rows=r.points.map(p=>`<tr><td>${esc(p.equip)}</td><td><b>${esc(p.state)}</b></td><td>${esc(p.text)}</td></tr>`).join("");
+ let measures=r.measures.length?`<div class="print-section">Relevés / mesures</div><table class="print-table"><tr><th>Équipement</th><th>Mesure</th><th>Valeur</th><th>Unité</th><th>Résultat</th></tr>${r.measures.map(m=>`<tr><td>${esc(m.equip)}</td><td>${esc(m.name)}</td><td>${esc(m.value)}</td><td>${esc(m.unit)}</td><td>${esc(m.result)}</td></tr>`).join("")}</table>`:"";
+ let photos=r.photos.map((p,i)=>`<div class="print-photo"><img src="${p.src}"><div style="text-align:center">Photo ${i+1}${p.caption?" – "+esc(p.caption):""}</div></div>`).join("");
+ $("printArea").innerHTML=`<div class="print-page"><div class="print-title">RAPPORT D’INTERVENTION</div><div class="print-ship">Navire : ${esc(r.ship)}</div>${r.context?`<p><b>Contexte :</b> ${esc(r.context)}</p>`:""}<table class="print-table"><tr><th>Équipement / Point contrôlé</th><th>État</th><th>Constat / Action à réaliser</th></tr>${rows}</table>${measures}<div class="print-section">Synthèse des actions prioritaires</div><div>${esc(r.summary).replace(/\n/g,"<br>")}</div><div class="print-section">Devis / Fournitures à prévoir</div><div>${esc(r.supplies).replace(/\n/g,"<br>")}</div></div>${photos?`<div class="print-page"><div class="print-title">PHOTOGRAPHIES${r.ship?" – "+esc(r.ship):""}</div><div style="text-align:center;margin-bottom:12px">Photographies prises lors du constat à bord.</div><div class="print-photo-grid">${photos}</div></div>`:""}`;
+}
+function printCurrent(){buildPrint();setTimeout(()=>window.print(),50)}
+async function addBoat(){const n=prompt("Nom du bateau");if(!n)return;const b={id:uid(),name:n.trim()};await put("boats",b);boats=await getAll("boats");fillBoats();openBoats()}
+async function openBoats(){$("home").classList.add("hidden");$("editor").classList.add("hidden");$("boats").classList.remove("hidden");$("boatRows").innerHTML=boats.map(b=>`<div class="card"><b>${esc(b.name)}</b><button class="danger small" style="float:right" onclick="deleteBoat('${b.id}')">Supprimer</button></div>`).join("")||"<p class='muted'>Aucun bateau enregistré.</p>"}
+async function deleteBoat(id){if(confirm("Supprimer ce bateau ?")){await del("boats",id);boats=await getAll("boats");fillBoats();openBoats()}}
+async function exportAll(){reports=await getAll("reports");boats=await getAll("boats");const data={version:4,exported:new Date().toISOString(),reports,boats};const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:"application/json"}));a.download="sauvegarde_rapports_intervention.json";a.click()}
+function importAll(e){const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=async()=>{try{const d=JSON.parse(rd.result);for(const r of d.reports||[])await put("reports",r);for(const b of d.boats||[])await put("boats",b);reports=await getAll("reports");boats=await getAll("boats");fillBoats();renderHome();alert("Sauvegarde restaurée")}catch{alert("Fichier de sauvegarde invalide")}};rd.readAsText(f)}
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+init();
+</script>
+</body>
+</html>

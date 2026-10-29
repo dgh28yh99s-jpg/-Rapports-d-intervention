@@ -1,0 +1,10 @@
+{
+  "name": "Rapports d’intervention",
+  "short_name": "Rapports",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f7",
+  "theme_color": "#234a78",
+  "lang": "fr-FR",
+  "description": "Application terrain pour créer des rapports d’intervention nautiques."
+}
