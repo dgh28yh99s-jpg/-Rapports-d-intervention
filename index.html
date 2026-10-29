@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#234a78">
+<meta name="theme-color" content="#0b2942">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Rapports">
 <link rel="manifest" href="manifest.json">
-<title>Rapports d’intervention — V8.0</title>
+<title>Rapports d’intervention — V9.0</title>
 <style>
 :root{--navy:#234a78;--navy2:#173756;--light:#e5edf5;--bg:#f3f5f7;--card:#fff;--text:#17212b;--muted:#65717d;--border:#d3dbe3;--ok:#e6f2e9;--warn:#fff1d7;--danger:#fae7e7}
 *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
@@ -42,26 +42,55 @@ main{max-width:none;padding:0}.card{box-shadow:none;border-radius:0;padding:0;ma
 .print-title{text-align:center;font-size:25px;font-weight:900;margin:0 0 5px}.print-ship{text-align:center;font-size:16px;margin-bottom:18px}
 .print-section{color:#234a78;font-weight:900;font-size:17px;margin:16px 0 7px}
 }
+
+/* V9 — interface iPhone / maintenance marine */
+:root{--navy:#0b2942;--navy2:#123f5f;--accent:#1976a8;--bg:#eef3f7;--card:#ffffff;--text:#13212c;--muted:#647483;--border:#d9e2e9;--ok:#e8f5ee;--warn:#fff2d8;--danger:#fde9e9}
+body{background:linear-gradient(180deg,#eaf1f6 0%,#f5f7f9 38%,#f5f7f9 100%);padding-bottom:76px}
+header{background:linear-gradient(135deg,#08243b,#0e3a58);padding:calc(18px + env(safe-area-inset-top)) 18px 18px;border-bottom:1px solid #ffffff18;box-shadow:0 5px 18px #0622382a}
+header h1{font-size:20px;letter-spacing:.2px} header .sub{font-size:12px;margin-top:5px}
+main{max-width:900px;padding:16px 14px 92px}
+.card{border-radius:18px;box-shadow:0 5px 20px #102c3d10;border:1px solid #ffffff; padding:16px}
+.home-hero{background:linear-gradient(135deg,#0b2942,#15597d);color:#fff;position:relative;overflow:hidden;padding:20px;border:0}
+.home-hero:after{content:"⚓";position:absolute;right:-5px;bottom:-24px;font-size:100px;opacity:.08}
+.home-hero h2{color:#fff;font-size:22px;margin:0 0 5px}.home-hero p{margin:0;color:#dceaf3;font-size:13px;max-width:290px}
+.home-actions{display:grid;grid-template-columns:1.45fr 1fr;gap:9px;margin-top:16px}.home-actions button{min-height:48px}.home-actions .primary{background:#fff;color:var(--navy);box-shadow:0 3px 10px #001d2b33}.home-actions .secondary{background:#ffffff18;color:#fff;border:1px solid #ffffff30}
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quick{background:#f6f9fb;border:1px solid #e4ebf0;border-radius:14px;padding:12px;text-align:left;min-height:72px}.quick b{display:block;font-size:20px;color:var(--navy)}.quick span{font-size:11px;color:var(--muted)}
+.kpi{gap:9px}.kpi div{background:#f7fafc;border:1px solid #e3ebf0;border-radius:14px;padding:12px}.kpi b{font-size:22px}
+.search-wrap{position:relative}.search-wrap span{position:absolute;left:13px;top:10px;font-size:17px;color:#7b8a97}.search-wrap input{padding-left:38px;background:#fbfcfd}
+.report-row{padding:2px}.report-row strong{font-size:16px}.report-row p{line-height:1.4}.badge{border:1px solid #dce6ed}.badge.ok{color:#256342}.badge.warn{color:#9a6200}
+.report-card{cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}.report-card:active{transform:scale(.985)}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.section-head h2{margin:0}.section-head span{font-size:11px;color:var(--muted)}
+.tabs{padding-bottom:2px}.tab{border:1px solid #dfe7ed}.tab.active{background:var(--navy)}
+button{transition:transform .08s ease}.primary{background:var(--navy)}button:active{transform:scale(.98)}
+.bottom-nav{position:fixed;z-index:50;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));height:62px;background:#ffffffee;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid #dbe5eb;border-radius:20px;box-shadow:0 8px 30px #08243b24;display:grid;grid-template-columns:repeat(4,1fr);padding:5px}
+.bottom-nav button{background:transparent;color:#657483;padding:6px 2px;border-radius:15px;font-size:10px;font-weight:700}.bottom-nav button span{display:block;font-size:19px;line-height:22px}.bottom-nav button.active{background:#e9f1f6;color:var(--navy)}
+.version-pill{display:inline-flex;align-items:center;gap:5px;background:#eaf1f6;color:#456273;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800}
+@media(max-width:650px){.home-actions{grid-template-columns:1fr 1fr}.home-actions .primary{grid-column:1/-1}.quick-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
-<header><h1>RAPPORTS D’INTERVENTION</h1><div class="sub">Application terrain – marine / maintenance · <strong>V8.0</strong></div></header>
+<header><h1>RAPPORTS D’INTERVENTION</h1><div class="sub">Application terrain · Maintenance marine · <strong>V9.0</strong></div></header>
 <main>
 <section id="home">
-  <div class="card no-print">
-    <div class="actions">
+  <div class="card home-hero no-print">
+    <h2>Maintenance marine</h2>
+    <p>Crée, complète et retrouve tes rapports d’intervention directement depuis l’iPhone.</p>
+    <div class="home-actions">
       <button class="primary" onclick="newReport()">＋ Nouveau rapport</button>
       <button class="secondary" onclick="openBoats()">🚤 Bateaux</button>
-      <button class="secondary" onclick="exportAll()">↗ Sauvegarde</button>
-      <label class="secondary" style="margin:0;display:flex;align-items:center;gap:6px">↙ Restaurer <input type="file" accept=".json" onchange="importAll(event)" style="display:none"></label>
+      <button class="secondary" onclick="exportAll()">💾 Sauvegarder</button>
     </div>
   </div>
   <div class="card no-print">
+    <div class="section-head"><h2>Vue d’ensemble</h2><span class="version-pill">● V9.0</span></div>
     <div class="kpi"><div><b id="kAll">0</b><span>Rapports</span></div><div><b id="kTodo">0</b><span>Actions à traiter</span></div><div><b id="kPhotos">0</b><span>Photos</span></div></div>
   </div>
-  <div class="card no-print"><input id="search" placeholder="Rechercher : navire, équipement, constat…" oninput="renderHome()"></div>
+  <div class="card no-print">
+    <div class="section-head"><h2>Rapports récents</h2><span>Appuie sur un rapport</span></div>
+    <div class="search-wrap"><span>⌕</span><input id="search" placeholder="Navire, équipement, constat…" oninput="renderHome()"></div>
+  </div>
   <div id="reportList"></div>
-  <div class="muted no-print" style="text-align:center;margin:18px 0 6px">Rapports d’intervention · Version <strong>V8.0</strong></div>
+  <div class="muted no-print" style="text-align:center;margin:18px 0 6px">Rapports d’intervention · Version <strong>V9.0</strong></div>
 </section>
 
 <section id="editor" class="hidden">
@@ -153,7 +182,14 @@ function renderHome(){
  const q=($("search").value||"").toLowerCase();
  const arr=reports.filter(r=>(r.ship+" "+r.context+" "+r.notes+" "+r.points.map(p=>p.equip+" "+p.text).join(" ")).toLowerCase().includes(q)).sort((a,b)=>(b.updated||"").localeCompare(a.updated||""));
  $("kAll").textContent=reports.length;$("kTodo").textContent=reports.reduce((n,r)=>n+r.points.filter(p=>p.state!=="✓ RÉALISÉ").length,0);$("kPhotos").textContent=reports.reduce((n,r)=>n+r.photos.length,0);
- $("reportList").innerHTML=arr.map(r=>`<div class="card no-print" onclick="editReport('${r.id}')"><div class="report-row"><div><strong>${esc(r.ship||"Sans nom")}</strong><p>${esc(r.date||"")} ${r.number?"· "+esc(r.number):""} · ${r.points.length} point(s) · ${r.photos.length} photo(s)</p></div><span class="badge ${r.points.some(p=>p.state!=="✓ RÉALISÉ")?"warn":"ok"}">${r.points.some(p=>p.state!=="✓ RÉALISÉ")?"À TRAITER":"RÉALISÉ"}</span></div></div>`).join("")||'<div class="card no-print">Aucun rapport.</div>';
+ $("reportList").innerHTML=arr.map(r=>`<div class="card no-print report-card" onclick="editReport('${r.id}')"><div class="report-row"><div><strong>${esc(r.ship||"Sans nom")}</strong><p>${esc(r.date||"")} ${r.number?"· "+esc(r.number):""} · ${r.points.length} point(s) · ${r.photos.length} photo(s)</p></div><span class="badge ${r.points.some(p=>p.state!=="✓ RÉALISÉ")?"warn":"ok"}">${r.points.some(p=>p.state!=="✓ RÉALISÉ")?"À TRAITER":"RÉALISÉ"}</span></div></div>`).join("")||'<div class="card no-print">Aucun rapport.</div>';
+}
+function showTodo(){
+  goHome();
+  const input=$("search");
+  input.value="";
+  const arr=reports.filter(r=>r.points.some(p=>p.state!=="✓ RÉALISÉ"));
+  $("reportList").innerHTML=arr.map(r=>`<div class="card no-print report-card" onclick="editReport('${r.id}\')"><div class="report-row"><div><strong>${esc(r.ship||"Sans nom")}</strong><p>${esc(r.date||"")} ${r.number?"· "+esc(r.number):""} · ${r.points.filter(p=>p.state!=="✓ RÉALISÉ").length} action(s)</p></div><span class="badge warn">À TRAITER</span></div></div>`).join("")||'<div class="card no-print">Aucune action à traiter 🎉</div>';
 }
 function tab(n){currentTab=n;document.querySelectorAll(".tabpage").forEach((x,i)=>x.classList.toggle("hidden",i!==n));document.querySelectorAll(".tab").forEach((x,i)=>x.classList.toggle("active",i===n))}
 function renderEditor(){
@@ -415,5 +451,11 @@ function importAll(e){const f=e.target.files[0];if(!f)return;const rd=new FileRe
 if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 init();
 </script>
+<nav class="bottom-nav no-print" aria-label="Navigation principale">
+  <button class="active" onclick="goHome()"><span>⌂</span>Accueil</button>
+  <button onclick="newReport()"><span>＋</span>Nouveau</button>
+  <button onclick="showTodo()"><span>✓</span>À traiter</button>
+  <button onclick="openBoats()"><span>🚤</span>Bateaux</button>
+</nav>
 </body>
 </html>
