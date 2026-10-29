@@ -1,4 +1,6 @@
-RAPPORTS D’INTERVENTION – V4
+Version : V8.0
+
+RAPPORTS D’INTERVENTION – V7
 ================================
 
 Cette version est pensée pour une utilisation iPhone sur le terrain.
@@ -20,7 +22,10 @@ Fonctions :
 - export/import de sauvegarde JSON
 - stockage local IndexedDB
 - fonctionnement hors connexion après premier chargement
-- génération du rapport imprimable / PDF via le menu d’impression
+- génération d’un PDF professionnel optimisé pour l’iPhone
+- mise en page A4 propre : en-tête, blocs d’informations, tableaux lisibles, synthèse encadrée et pied de page paginé
+- gestion automatique des sauts de page pour les longs rapports
+- photos en pages dédiées, jusqu’à 2 photos par page avec légende
 
 Mise en ligne recommandée : GitHub Pages.
 IMPORTANT : GitHub Pages rend le site accessible publiquement. Ne jamais mettre dans le dépôt des données confidentielles ou des rapports contenant des informations sensibles. Les données créées dans l’application sont stockées localement sur l’appareil ; le dépôt contient uniquement le code.
