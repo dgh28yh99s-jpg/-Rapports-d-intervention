@@ -1,4 +1,4 @@
-const CACHE="ri-v4-cache";
+const CACHE="ri-v5-cache";
 const ASSETS=["./","./index.html","./manifest.json"];
 self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
 self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));
