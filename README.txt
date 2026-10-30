@@ -1,40 +1,28 @@
-Version : V8.0
+T.E.I — V10.0
 
-RAPPORTS D’INTERVENTION – V7
-================================
+Nouvelle architecture :
+- Accueil T.E.I
+- Rapport d’intervention (module V9 conservé + pièces jointes)
+- Bateau en construction
+  - suivi par cale
+  - pourcentage calculé selon les équipements terminés
+  - ordres du jour / missions des techniciens
+  - comptes rendus de fin de semaine
+  - documents joints au chantier
+- Notices et modes opératoires
+  - recherche
+  - catégories
+  - pièces jointes
 
-Cette version est pensée pour une utilisation iPhone sur le terrain.
+Données :
+- IndexedDB local sur l’appareil
+- Les rapports V9 existants sont conservés (même base RI_V4, version IndexedDB 2)
+- Les nouvelles données sont dans les stores constructions et docs
+- Sauvegarde JSON inclut rapports, bateaux, constructions et notices
 
-Fonctions :
-- création / modification / duplication / suppression des rapports
-- liste et recherche des rapports
-- bibliothèque de bateaux
-- numéro de rapport
-- date, technicien, lieu, contexte, notes
-- points contrôlés avec états adaptés aux rapports fournis
-- bibliothèque d’équipements courants
-- dictée vocale des constats (si le navigateur le permet)
-- relevés / mesures
-- photos prises directement avec l’iPhone
-- compression automatique des photos
-- synthèse automatique des actions
-- devis / fournitures
-- export/import de sauvegarde JSON
-- stockage local IndexedDB
-- fonctionnement hors connexion après premier chargement
-- génération d’un PDF professionnel optimisé pour l’iPhone
-- mise en page A4 propre : en-tête, blocs d’informations, tableaux lisibles, synthèse encadrée et pied de page paginé
-- gestion automatique des sauts de page pour les longs rapports
-- photos en pages dédiées, jusqu’à 2 photos par page avec légende
+iPhone :
+- Icône T.E.I noire avec texte blanc
+- Manifest et cache T.E.I V10
+- Après publication GitHub Pages, si l’ancienne version reste affichée, fermer le site puis le rouvrir. La nouvelle icône peut nécessiter de supprimer/réajouter le raccourci à l’écran d’accueil.
 
-Mise en ligne recommandée : GitHub Pages.
-IMPORTANT : GitHub Pages rend le site accessible publiquement. Ne jamais mettre dans le dépôt des données confidentielles ou des rapports contenant des informations sensibles. Les données créées dans l’application sont stockées localement sur l’appareil ; le dépôt contient uniquement le code.
-
-Procédure :
-1. Créer un compte GitHub.
-2. Créer un dépôt public, par exemple rapports-intervention.
-3. Envoyer index.html, manifest.json et sw.js à la racine du dépôt.
-4. Dans Settings > Pages, choisir Deploy from a branch, branche main, dossier /root, puis Save.
-5. Attendre la publication.
-6. Ouvrir l’adresse GitHub Pages dans Safari.
-7. Safari > Partager > Ajouter à l’écran d’accueil.
+Important : les pièces jointes sont stockées localement dans IndexedDB. Faire des sauvegardes régulières.

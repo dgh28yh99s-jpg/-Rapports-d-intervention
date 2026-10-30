@@ -1,10 +1,14 @@
 {
-  "name": "Rapports d’intervention V9",
-  "short_name": "Rapports",
+  "name": "T.E.I — Technique Électricité Industrie",
+  "short_name": "T.E.I",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f3f5f7",
-  "theme_color": "#234a78",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "lang": "fr-FR",
-  "description": "Application terrain pour créer des rapports d’intervention nautiques."
+  "description": "Application terrain T.E.I : rapports d’intervention, bateaux en construction, notices et modes opératoires.",
+  "icons": [
+    {"src":"tei-icon-180.png","sizes":"180x180","type":"image/png","purpose":"any maskable"},
+    {"src":"tei-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
 }

@@ -3,12 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b2942">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-title" content="T.E.I">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Rapports">
+<link rel="apple-touch-icon" href="tei-icon-180.png">
 <link rel="manifest" href="manifest.json">
-<title>Rapports d’intervention — V9.0</title>
+<title>T.E.I — V10.0</title>
 <style>
 :root{--navy:#234a78;--navy2:#173756;--light:#e5edf5;--bg:#f3f5f7;--card:#fff;--text:#17212b;--muted:#65717d;--border:#d3dbe3;--ok:#e6f2e9;--warn:#fff1d7;--danger:#fae7e7}
 *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
@@ -66,12 +67,32 @@ button{transition:transform .08s ease}.primary{background:var(--navy)}button:act
 .bottom-nav button{background:transparent;color:#657483;padding:6px 2px;border-radius:15px;font-size:10px;font-weight:700}.bottom-nav button span{display:block;font-size:19px;line-height:22px}.bottom-nav button.active{background:#e9f1f6;color:var(--navy)}
 .version-pill{display:inline-flex;align-items:center;gap:5px;background:#eaf1f6;color:#456273;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800}
 @media(max-width:650px){.home-actions{grid-template-columns:1fr 1fr}.home-actions .primary{grid-column:1/-1}.quick-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* V10 — portail T.E.I / suivi de construction / documents */
+.tei-header{background:#050505!important;padding:calc(16px + env(safe-area-inset-top)) 18px 16px!important}
+.tei-brand{display:flex;align-items:center;gap:12px}.tei-logo{width:42px;height:42px;border-radius:11px;background:#000;border:1px solid #ffffff24;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:950;letter-spacing:1px;font-size:14px;box-shadow:0 3px 12px #0008}.tei-brand h1{font-size:21px!important;letter-spacing:2px!important}.tei-brand .sub{color:#bfc4c8!important}
+.portal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.portal-card{min-height:170px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;cursor:pointer;position:relative;overflow:hidden}.portal-card:after{content:"";position:absolute;right:-20px;bottom:-25px;font-size:105px;opacity:.055}.portal-card.reports:after{content:"📋"}.portal-card.build:after{content:"🚢"}.portal-card.docs:after{content:"📚"}.portal-icon{font-size:30px;margin-bottom:12px}.portal-card h2{font-size:19px;margin:0 0 6px}.portal-card p{font-size:12px;color:var(--muted);line-height:1.45;margin:0}.portal-card .primary{margin-top:15px}.module-head{background:linear-gradient(135deg,#0b2942,#15597d);color:#fff;border-radius:18px;padding:18px;margin-bottom:12px}.module-head h2{color:#fff;margin:0 0 5px}.module-head p{margin:0;color:#dbeaf3;font-size:12px}.construction-card{cursor:pointer}.progress{height:10px;background:#e7edf2;border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;background:linear-gradient(90deg,#0b2942,#1b8bbd);border-radius:99px}.build-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.build-kpis div{background:#f5f8fa;border:1px solid #e1e9ee;border-radius:13px;padding:10px}.build-kpis b{display:block;font-size:18px;color:var(--navy)}.build-kpis span{font-size:10px;color:var(--muted)}.attachment-list{display:grid;gap:8px}.attachment{display:flex;align-items:center;gap:9px;padding:10px;background:#f6f8fa;border:1px solid #e0e7ec;border-radius:12px}.attachment .fileicon{font-size:22px}.attachment .fname{flex:1;min-width:0}.attachment .fname strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.attachment .fname span{font-size:10px;color:var(--muted)}.check-grid{display:grid;grid-template-columns:1fr 90px 95px;gap:6px;align-items:center}.check-grid>div{padding:7px 4px;border-bottom:1px solid #e5eaee;font-size:12px}.check-grid input,.check-grid select{padding:7px;font-size:12px}.notice-card{cursor:pointer}.tag{display:inline-block;padding:4px 7px;border-radius:999px;background:#edf3f7;font-size:10px;font-weight:800;color:#486172;margin-right:4px}.floating-add{position:sticky;bottom:80px;z-index:10}.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.team-grid .card{margin:0}.week-item{border-left:4px solid #1976a8;padding-left:10px;margin:10px 0}.dark-btn{background:#000;color:#fff}.black-note{background:#0b0b0b;color:#fff;border-radius:14px;padding:12px;font-size:12px}.file-drop{border:2px dashed #cbd8e0;border-radius:15px;padding:18px;text-align:center;background:#f9fbfc;color:#5d7180}
+@media(max-width:700px){.portal-grid{grid-template-columns:1fr}.portal-card{min-height:145px}.check-grid{grid-template-columns:1fr 75px 90px}}
+
 </style>
 </head>
 <body>
-<header><h1>RAPPORTS D’INTERVENTION</h1><div class="sub">Application terrain · Maintenance marine · <strong>V9.0</strong></div></header>
+<header class="tei-header"><div class="tei-brand"><div class="tei-logo">T.E.I</div><div><h1>T.E.I</h1><div class="sub">Technique · Électricité · Industrie</div></div></div></header>
 <main>
-<section id="home">
+<section id="portal">
+  <div class="card home-hero no-print" style="background:linear-gradient(135deg,#000,#202020)">
+    <h2>Bienvenue dans T.E.I</h2><p>Ton espace de suivi technique, d’intervention et de construction navale.</p>
+    <div class="version-pill" style="margin-top:12px;background:#fff;color:#111">VERSION V10.0</div>
+  </div>
+  <div class="portal-grid no-print">
+    <div class="card portal-card reports" onclick="openReportsModule()"><div><div class="portal-icon">📋</div><h2>Rapport d’intervention</h2><p>Créer, compléter, photographier et transmettre tes rapports de maintenance.</p></div><button class="primary">Ouvrir →</button></div>
+    <div class="card portal-card build" onclick="openConstructionModule()"><div><div class="portal-icon">🚢</div><h2>Bateau en construction</h2><p>Suivre l’avancement cale par cale, les missions, les réunions et les comptes rendus.</p></div><button class="primary">Ouvrir →</button></div>
+    <div class="card portal-card docs" onclick="openDocsModule()"><div><div class="portal-icon">📚</div><h2>Notices et mode opératoire</h2><p>Centraliser les notices, procédures, schémas et documents techniques.</p></div><button class="primary">Ouvrir →</button></div>
+  </div>
+  <div class="black-note no-print" style="margin-top:12px">🔒 Les données et pièces jointes sont stockées localement sur cet appareil. Pense à effectuer régulièrement une sauvegarde.</div>
+</section>
+
+<section id="home" class="hidden">
   <div class="card home-hero no-print">
     <h2>Maintenance marine</h2>
     <p>Crée, complète et retrouve tes rapports d’intervention directement depuis l’iPhone.</p>
@@ -102,7 +123,7 @@ button{transition:transform .08s ease}.primary{background:var(--navy)}button:act
   <div class="tabs no-print">
     <button class="tab active" onclick="tab(0)">1. Infos</button><button class="tab" onclick="tab(1)">2. Points</button>
     <button class="tab" onclick="tab(2)">3. Mesures</button><button class="tab" onclick="tab(3)">4. Photos</button>
-    <button class="tab" onclick="tab(4)">5. Synthèse</button>
+    <button class="tab" onclick="tab(4)">5. Fichiers</button><button class="tab" onclick="tab(5)">6. Synthèse</button>
   </div>
 
   <div class="tabpage">
@@ -138,6 +159,14 @@ button{transition:transform .08s ease}.primary{background:var(--navy)}button:act
   </div>
 
   <div class="tabpage hidden">
+    <div class="card"><h2>Pièces jointes</h2><p class="muted">Ajoute des PDF, documents, plans, devis ou autres fichiers liés au rapport.</p>
+      <div class="actions no-print"><button class="primary" onclick="attachmentInput.click()">＋ Ajouter des fichiers</button></div>
+      <input id="attachmentInput" type="file" multiple class="hidden" onchange="addAttachments(event)">
+      <div id="attachmentGrid" class="attachment-list" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div class="tabpage hidden">
     <div class="card"><h2>Synthèse des actions prioritaires</h2>
       <textarea id="summary" placeholder="Synthèse du rapport…"></textarea>
       <div class="actions no-print"><button class="secondary" onclick="generateSummary()">Générer automatiquement</button></div>
@@ -151,6 +180,35 @@ button{transition:transform .08s ease}.primary{background:var(--navy)}button:act
   <div id="printArea" class="print-only"></div>
 </section>
 
+
+<section id="construction" class="hidden">
+  <div class="actions no-print" style="margin-bottom:10px"><button class="secondary" onclick="portalHome()">← T.E.I</button><button class="primary" onclick="newConstruction()">＋ Nouveau bateau</button></div>
+  <div class="module-head"><h2>Bateaux en construction</h2><p>Suivi global du chantier, avancement cale par cale, missions et comptes rendus.</p></div>
+  <div class="card no-print"><div class="section-head"><h2>Chantiers</h2><span id="buildCount">0</span></div><div id="constructionList"></div></div>
+</section>
+<section id="constructionEdit" class="hidden">
+  <div class="actions no-print" style="margin-bottom:10px"><button class="secondary" onclick="openConstructionModule()">← Chantiers</button><button class="primary" onclick="saveConstruction()">Enregistrer</button></div>
+  <div class="card"><div class="section-head"><h2 id="buildTitle">Nouveau bateau</h2><span class="version-pill">SUIVI CHANTIER</span></div>
+    <div class="grid2"><div><label>Nom / projet du bateau</label><input id="buildName"></div><div><label>Client / chantier</label><input id="buildClient"></div></div>
+    <div class="grid3"><div><label>Date de début</label><input id="buildStart" type="date"></div><div><label>Date cible</label><input id="buildTarget" type="date"></div><div><label>Chef de chantier</label><input id="buildLead"></div></div>
+    <label>Notes générales</label><textarea id="buildNotes"></textarea>
+  </div>
+  <div class="card"><div class="section-head"><h2>Avancement cale par cale</h2><button class="secondary small no-print" onclick="addBay()">＋ Ajouter une cale</button></div><p class="muted">Le pourcentage est calculé à partir des équipements saisis dans chaque cale et de leur état.</p><div id="bayList"></div></div>
+  <div class="card"><div class="section-head"><h2>Ordres du jour / missions</h2><button class="secondary small no-print" onclick="addAgenda()">＋ Ajouter</button></div><div id="agendaList"></div></div>
+  <div class="card"><div class="section-head"><h2>Comptes rendus de fin de semaine</h2><button class="secondary small no-print" onclick="addWeekly()">＋ Ajouter</button></div><div id="weeklyList"></div></div>
+  <div class="card"><h2>Documents du chantier</h2><div class="file-drop no-print" onclick="buildFileInput.click()">📎 Appuyer pour ajouter des documents</div><input id="buildFileInput" type="file" multiple class="hidden" onchange="addBuildFiles(event)"><div id="buildFiles" class="attachment-list" style="margin-top:10px"></div></div>
+</section>
+<section id="docs" class="hidden">
+  <div class="actions no-print" style="margin-bottom:10px"><button class="secondary" onclick="portalHome()">← T.E.I</button><button class="primary" onclick="newDoc()">＋ Nouvelle notice</button></div>
+  <div class="module-head"><h2>Notices et modes opératoires</h2><p>Une bibliothèque technique pour retrouver rapidement les documents utiles.</p></div>
+  <div class="card no-print"><input id="docSearch" placeholder="Rechercher une notice, référence, équipement…" oninput="renderDocs()"></div>
+  <div id="docList"></div>
+</section>
+<section id="docEdit" class="hidden">
+  <div class="actions no-print" style="margin-bottom:10px"><button class="secondary" onclick="openDocsModule()">← Notices</button><button class="primary" onclick="saveDoc()">Enregistrer</button></div>
+  <div class="card"><h2>Notice / mode opératoire</h2><div class="grid2"><div><label>Titre</label><input id="docTitle"></div><div><label>Référence</label><input id="docRef"></div></div><div class="grid2"><div><label>Équipement / famille</label><input id="docEquip"></div><div><label>Catégorie</label><select id="docCat"><option>Notice</option><option>Mode opératoire</option><option>Schéma</option><option>Procédure</option><option>Autre</option></select></div></div><label>Description</label><textarea id="docDesc"></textarea></div>
+  <div class="card"><h2>Pièces jointes</h2><div class="file-drop no-print" onclick="docFileInput.click()">📎 Ajouter des documents</div><input id="docFileInput" type="file" multiple class="hidden" onchange="addDocFiles(event)"><div id="docFiles" class="attachment-list" style="margin-top:10px"></div></div>
+</section>
 <section id="boats" class="hidden">
   <div class="actions no-print"><button class="secondary" onclick="goHome()">← Retour</button><button class="primary" onclick="addBoat()">＋ Nouveau bateau</button></div>
   <div class="card no-print"><h2>Bateaux enregistrés</h2><div id="boatRows"></div></div>
@@ -158,25 +216,27 @@ button{transition:transform .08s ease}.primary{background:var(--navy)}button:act
 </main>
 
 <script>
-const DB_NAME="RI_V4", DB_VER=1;
-let db, current=null, boats=[], reports=[], currentTab=0, recognition=null;
+const DB_NAME="RI_V4", DB_VER=2;
+let db, current=null, boats=[], reports=[], constructions=[], docs=[], currentConstruction=null, currentDoc=null, currentTab=0, recognition=null;
 const STATES=["✓ RÉALISÉ","À TRAITER EN 2026","À TRAITER EN 2027","À TRAITER AVANT LA SORTIE À PORQUEROLLES","À TRAITER PENDANT LA SORTIE","À SURVEILLER","À CHIFFRER","EN ATTENTE PIÈCES"];
 const PRESETS=["Commande coupe-batterie","Prise de quai","Cosses batterie","Couplage des parcs batteries de démarrage","Alimentation de secours centrale incendie","Relevé d’isolement","Changement câbles","Platine pupitre moteur","Prise USB pupitre moteur","Alimentation essuie-glaces","Éclairage salle","Éclairage machine 24 V","Éclairage machine 230 V","Batteries","Chargeur batteries","Groupe électrogène","Tableau électrique","Pompe","Climatisation / VRF","Ventilation","Prise de service","Prise USB","Feux de navigation","Avertisseur sonore","Pompe de cale","Guindeau","Propulseur","Treuil","Barre / angle de barre","Instrumentation moteur"];
 const $=id=>document.getElementById(id);
 function uid(){return Date.now()+"_"+Math.random().toString(16).slice(2)}
 function esc(s){return String(s??"").replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]))}
 function attr(s){return esc(s).replace(/"/g,"&quot;")}
-function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains("reports"))d.createObjectStore("reports",{keyPath:"id"});if(!d.objectStoreNames.contains("boats"))d.createObjectStore("boats",{keyPath:"id"})};r.onsuccess=e=>{db=e.target.result;res()};r.onerror=()=>rej(r.error)})}
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains("reports"))d.createObjectStore("reports",{keyPath:"id"});if(!d.objectStoreNames.contains("boats"))d.createObjectStore("boats",{keyPath:"id"});if(!d.objectStoreNames.contains("constructions"))d.createObjectStore("constructions",{keyPath:"id"});if(!d.objectStoreNames.contains("docs"))d.createObjectStore("docs",{keyPath:"id"})};r.onsuccess=e=>{db=e.target.result;res()};r.onerror=()=>rej(r.error)})}
 function store(name,mode="readonly"){return db.transaction(name,mode).objectStore(name)}
 async function getAll(name){return new Promise((res,rej)=>{let r=store(name).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 async function put(name,obj){return new Promise((res,rej)=>{let r=store(name,"readwrite").put(obj);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
 async function del(name,id){return new Promise((res,rej)=>{let r=store(name,"readwrite").delete(id);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
-function blank(){return {id:uid(),ship:"",number:"",date:new Date().toISOString().slice(0,10),tech:"",place:"",context:"",notes:"",points:[],measures:[],photos:[],summary:"",supplies:"",created:new Date().toISOString(),updated:new Date().toISOString()}}
-async function init(){await openDB();reports=await getAll("reports");boats=await getAll("boats");fillBoats();renderHome()}
+function blank(){return {id:uid(),ship:"",number:"",date:new Date().toISOString().slice(0,10),tech:"",place:"",context:"",notes:"",points:[],measures:[],photos:[],attachments:[],summary:"",supplies:"",created:new Date().toISOString(),updated:new Date().toISOString()}}
+async function init(){await openDB();reports=await getAll("reports");boats=await getAll("boats");constructions=await getAll("constructions");docs=await getAll("docs");fillBoats();renderHome();renderDocs()}
 function fillBoats(){$("boatList").innerHTML=boats.map(b=>`<option value="${attr(b.name)}">`).join("")}
 function newReport(){current=blank();showEditor();renderEditor()}
-function showEditor(){$("home").classList.add("hidden");$("boats").classList.add("hidden");$("editor").classList.remove("hidden");scrollTo(0,0)}
-function goHome(){$("editor").classList.add("hidden");$("boats").classList.add("hidden");$("home").classList.remove("hidden");renderHome()}
+function showEditor(){$("portal").classList.add("hidden");$("home").classList.remove("hidden");$("boats").classList.add("hidden");$("construction").classList.add("hidden");$("constructionEdit").classList.add("hidden");$("docs").classList.add("hidden");$("docEdit").classList.add("hidden");$("editor").classList.remove("hidden");scrollTo(0,0)}
+function goHome(){$("editor").classList.add("hidden");$("boats").classList.add("hidden");$("construction").classList.add("hidden");$("constructionEdit").classList.add("hidden");$("docs").classList.add("hidden");$("docEdit").classList.add("hidden");$("home").classList.remove("hidden");renderHome();window.scrollTo(0,0)}
+function portalHome(){$("portal").classList.remove("hidden");["home","editor","boats","construction","constructionEdit","docs","docEdit"].forEach(id=>$(id)?.classList.add("hidden"));window.scrollTo(0,0)}
+function openReportsModule(){portalHome();$("home").classList.remove("hidden");renderHome()}
 async function editReport(id){current=JSON.parse(JSON.stringify(reports.find(x=>x.id===id)));showEditor();renderEditor()}
 function renderHome(){
  const q=($("search").value||"").toLowerCase();
@@ -196,7 +256,7 @@ function renderEditor(){
  $("ship").value=current.ship;$("number").value=current.number;$("date").value=current.date;$("tech").value=current.tech;$("place").value=current.place;$("context").value=current.context;$("notes").value=current.notes;$("summary").value=current.summary;$("supplies").value=current.supplies;
  $("pointsTable").querySelector("tbody").innerHTML="";current.points.forEach(addPoint);
  $("measureTable").querySelector("tbody").innerHTML="";current.measures.forEach(addMeasure);
- renderPhotos();tab(0)
+ renderPhotos();renderAttachments();tab(0)
 }
 function addPoint(p={equip:"",state:"✓ RÉALISÉ",text:""}){
  const tr=document.createElement("tr");tr.innerHTML=`<td><input class="pe" value="${attr(p.equip)}"></td><td><select class="ps">${STATES.map(s=>`<option>${esc(s)}</option>`).join("")}</select></td><td><textarea class="pt">${esc(p.text)}</textarea><button class="voice no-print" onclick="dictate(this)">🎙️ Dictée</button></td><td class="no-print"><button class="danger small" onclick="this.closest('tr').remove()">×</button></td>`;
@@ -212,6 +272,11 @@ function readMeasures(){return [...$("measureTable").querySelectorAll("tbody tr"
 function resizeImage(file,max=1500,quality=.78){return new Promise(res=>{const rd=new FileReader();rd.onload=e=>{const im=new Image();im.onload=()=>{let w=im.width,h=im.height,scale=Math.min(1,max/Math.max(w,h));w=Math.round(w*scale);h=Math.round(h*scale);const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(im,0,0,w,h);res(c.toDataURL("image/jpeg",quality))};im.src=e.target.result};rd.readAsDataURL(file)})}
 async function addPhotoFiles(e){for(const f of [...e.target.files]){const src=await resizeImage(f);current.photos.push({id:uid(),src,caption:""});renderPhotos()}e.target.value=""}
 function renderPhotos(){$("photoGrid").innerHTML=current.photos.map((p,i)=>`<div class="photo-card"><img src="${p.src}"><input value="${attr(p.caption||"")}" placeholder="Légende / constat" oninput="current.photos[${i}].caption=this.value"><button class="danger small no-print" style="margin-top:6px" onclick="current.photos.splice(${i},1);renderPhotos()">Supprimer</button></div>`).join("")}
+
+function fileToData(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(file)})}
+async function addAttachments(e){for(const f of [...e.target.files]){current.attachments=current.attachments||[];current.attachments.push({id:uid(),name:f.name,size:f.size,type:f.type,data:await fileToData(f)});}renderAttachments();e.target.value=""}
+function renderAttachments(){$("attachmentGrid").innerHTML=(current?.attachments||[]).map((a,i)=>`<div class="attachment"><div class="fileicon">📎</div><div class="fname"><strong>${esc(a.name)}</strong><span>${Math.round((a.size||0)/1024)} Ko · ${esc(a.type||"fichier")}</span></div><button class="secondary small" onclick="downloadAttachment(current.attachments[${i}])">Ouvrir</button><button class="danger small no-print" onclick="current.attachments.splice(${i},1);renderAttachments()">×</button></div>`).join("")||'<div class="muted">Aucun fichier joint.</div>'}
+function downloadAttachment(a){const url=a.data;const w=window.open(url,"_blank");if(!w){const el=document.createElement("a");el.href=url;el.download=a.name;el.click()}}
 function readForm(){current.ship=$("ship").value.trim();current.number=$("number").value.trim();current.date=$("date").value;current.tech=$("tech").value.trim();current.place=$("place").value.trim();current.context=$("context").value;current.notes=$("notes").value;current.summary=$("summary").value;current.supplies=$("supplies").value;current.points=readPoints();current.measures=readMeasures();current.updated=new Date().toISOString()}
 async function saveCurrent(copy=false){readForm();if(copy)current={...JSON.parse(JSON.stringify(current)),id:uid(),number:current.number?current.number+"-COPIE":"",created:new Date().toISOString()};await put("reports",current);reports=await getAll("reports");alert("Rapport enregistré");if(copy)goHome()}
 async function deleteCurrent(){if(confirm("Supprimer ce rapport ?")){await del("reports",current.id);reports=await getAll("reports");goHome()}}
@@ -362,6 +427,7 @@ function makePdfReport(){
   }
   sectionBox("Synthèse des actions prioritaires",r.summary);
   sectionBox("Devis / Fournitures à prévoir",r.supplies);
+  if((r.attachments||[]).length){sectionBox("Pièces jointes au rapport",r.attachments.map(a=>"• "+a.name).join("\n"));}
   addPage(cmd);
 
   // ---- Pages photos : 2 photos maximum par page ----
@@ -444,18 +510,48 @@ async function printCurrent(){
 }
 
 async function addBoat(){const n=prompt("Nom du bateau");if(!n)return;const b={id:uid(),name:n.trim()};await put("boats",b);boats=await getAll("boats");fillBoats();openBoats()}
-async function openBoats(){$("home").classList.add("hidden");$("editor").classList.add("hidden");$("boats").classList.remove("hidden");$("boatRows").innerHTML=boats.map(b=>`<div class="card"><b>${esc(b.name)}</b><button class="danger small" style="float:right" onclick="deleteBoat('${b.id}')">Supprimer</button></div>`).join("")||"<p class='muted'>Aucun bateau enregistré.</p>"}
+async function openBoats(){$("portal").classList.add("hidden");$("home").classList.add("hidden");$("editor").classList.add("hidden");$("construction").classList.add("hidden");$("constructionEdit").classList.add("hidden");$("docs").classList.add("hidden");$("docEdit").classList.add("hidden");$("boats").classList.remove("hidden");$("boatRows").innerHTML=boats.map(b=>`<div class="card"><b>${esc(b.name)}</b><button class="danger small" style="float:right" onclick="deleteBoat('${b.id}')">Supprimer</button></div>`).join("")||"<p class='muted'>Aucun bateau enregistré.</p>"}
 async function deleteBoat(id){if(confirm("Supprimer ce bateau ?")){await del("boats",id);boats=await getAll("boats");fillBoats();openBoats()}}
-async function exportAll(){reports=await getAll("reports");boats=await getAll("boats");const data={version:4,exported:new Date().toISOString(),reports,boats};const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:"application/json"}));a.download="sauvegarde_rapports_intervention.json";a.click()}
-function importAll(e){const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=async()=>{try{const d=JSON.parse(rd.result);for(const r of d.reports||[])await put("reports",r);for(const b of d.boats||[])await put("boats",b);reports=await getAll("reports");boats=await getAll("boats");fillBoats();renderHome();alert("Sauvegarde restaurée")}catch{alert("Fichier de sauvegarde invalide")}};rd.readAsText(f)}
+
+function openConstructionModule(){["portal","home","editor","boats","constructionEdit","docs","docEdit"].forEach(id=>$(id)?.classList.add("hidden"));$("construction").classList.remove("hidden");renderConstructions();window.scrollTo(0,0)}
+function blankConstruction(){return {id:uid(),name:"",client:"",start:new Date().toISOString().slice(0,10),target:"",lead:"",notes:"",bays:[],agendas:[],weeklies:[],attachments:[],updated:new Date().toISOString()}}
+function newConstruction(){currentConstruction=blankConstruction();showConstructionEditor();}
+function showConstructionEditor(){["portal","home","editor","boats","construction","docs","docEdit"].forEach(id=>$(id)?.classList.add("hidden"));$("constructionEdit").classList.remove("hidden");renderConstructionEditor();window.scrollTo(0,0)}
+function editConstruction(id){currentConstruction=JSON.parse(JSON.stringify(constructions.find(x=>x.id===id)));showConstructionEditor()}
+function calcBay(b){const a=b.equipment||[];if(!a.length)return 0;return Math.round(a.reduce((n,e)=>n+(e.done?100:0),0)/a.length)}
+function calcConstruction(c){const bays=c.bays||[];return bays.length?Math.round(bays.reduce((n,b)=>n+calcBay(b),0)/bays.length):0}
+function renderConstructions(){$("buildCount").textContent=constructions.length;$("constructionList").innerHTML=constructions.map(c=>{const pct=calcConstruction(c);return `<div class="card construction-card" onclick="editConstruction('${c.id}')"><div class="section-head"><h2>${esc(c.name||"Bateau sans nom")}</h2><span class="badge">${pct}%</span></div><p class="muted">${esc(c.client||"")} ${c.lead?"· "+esc(c.lead):""}</p><div class="progress"><i style="width:${pct}%"></i></div><div class="muted" style="margin-top:7px">${(c.bays||[]).length} cale(s) · ${(c.agendas||[]).length} ordre(s) du jour · ${(c.weeklies||[]).length} compte(s) rendu(s)</div></div>`}).join("")||'<div class="card">Aucun bateau en construction.</div>'}
+function renderConstructionEditor(){$("buildName").value=currentConstruction.name||"";$('buildClient').value=currentConstruction.client||"";$('buildStart').value=currentConstruction.start||"";$('buildTarget').value=currentConstruction.target||"";$('buildLead').value=currentConstruction.lead||"";$('buildNotes').value=currentConstruction.notes||"";renderBays();renderAgendas();renderWeeklies();renderBuildFiles()}
+function addBay(b={name:"",equipment:[]}){currentConstruction.bays.push({id:uid(),name:b.name,equipment:b.equipment||[]});renderBays()}
+function addEquipment(bi,e={name:"",done:false,tech:""}){currentConstruction.bays[bi].equipment.push({id:uid(),name:e.name,done:!!e.done,tech:e.tech||""});renderBays()}
+function renderBays(){$("bayList").innerHTML=(currentConstruction.bays||[]).map((b,bi)=>{const pct=calcBay(b);return `<div class="card" style="margin-bottom:10px"><div class="section-head"><h2>Cale ${bi+1}</h2><span class="badge">${pct}%</span></div><input value="${attr(b.name)}" placeholder="Nom / zone / description" oninput="currentConstruction.bays[${bi}].name=this.value"><div class="progress" style="margin:8px 0"><i style="width:${pct}%"></i></div><div class="check-grid"><div><b>Équipement</b></div><div><b>Fait</b></div><div><b>Technicien</b></div>${(b.equipment||[]).map((e,ei)=>`<div><input value="${attr(e.name)}" placeholder="Équipement" oninput="currentConstruction.bays[${bi}].equipment[${ei}].name=this.value"></div><div><select onchange="currentConstruction.bays[${bi}].equipment[${ei}].done=this.value==='1';renderBays()"><option value="0" ${!e.done?'selected':''}>À faire</option><option value="1" ${e.done?'selected':''}>Terminé</option></select></div><div><input value="${attr(e.tech)}" placeholder="Tech." oninput="currentConstruction.bays[${bi}].equipment[${ei}].tech=this.value"></div>`).join("")}</div><div class="actions no-print" style="margin-top:8px"><button class="secondary small" onclick="addEquipment(${bi})">＋ Équipement</button><button class="danger small" onclick="currentConstruction.bays.splice(${bi},1);renderBays()">Supprimer la cale</button></div></div>`}).join("")||'<div class="muted">Ajoute une cale pour commencer.</div>'}
+function addAgenda(a={date:new Date().toISOString().slice(0,10),title:"",missions:"",techs:"",attachments:[]}){currentConstruction.agendas.push({id:uid(),...a});renderAgendas()}
+function renderAgendas(){$("agendaList").innerHTML=(currentConstruction.agendas||[]).map((a,i)=>`<div class="card"><div class="grid2"><div><label>Date</label><input type="date" value="${attr(a.date)}" oninput="currentConstruction.agendas[${i}].date=this.value"></div><div><label>Objet</label><input value="${attr(a.title)}" oninput="currentConstruction.agendas[${i}].title=this.value"></div></div><label>Missions / techniciens</label><textarea oninput="currentConstruction.agendas[${i}].missions=this.value" placeholder="Technicien — mission — zone — objectif">${esc(a.missions||"")}</textarea><button class="danger small no-print" onclick="currentConstruction.agendas.splice(${i},1);renderAgendas()">Supprimer</button></div>`).join("")}
+function addWeekly(w={week:"",summary:"",issues:"",next:"",attachments:[]}){currentConstruction.weeklies.push({id:uid(),...w});renderWeeklies()}
+function renderWeeklies(){$("weeklyList").innerHTML=(currentConstruction.weeklies||[]).map((w,i)=>`<div class="card"><label>Semaine</label><input placeholder="Ex. Semaine 44 — 26/10 au 30/10" value="${attr(w.week)}" oninput="currentConstruction.weeklies[${i}].week=this.value"><label>Travaux réalisés</label><textarea oninput="currentConstruction.weeklies[${i}].summary=this.value"></textarea><label>Points bloquants / réserves</label><textarea oninput="currentConstruction.weeklies[${i}].issues=this.value"></textarea><label>Priorités semaine suivante</label><textarea oninput="currentConstruction.weeklies[${i}].next=this.value"></textarea><button class="danger small no-print" onclick="currentConstruction.weeklies.splice(${i},1);renderWeeklies()">Supprimer</button></div>`).join("")}
+async function addBuildFiles(e){for(const f of [...e.target.files]){currentConstruction.attachments=currentConstruction.attachments||[];currentConstruction.attachments.push({id:uid(),name:f.name,size:f.size,type:f.type,data:await fileToData(f)})}renderBuildFiles();e.target.value=""}
+function renderBuildFiles(){$("buildFiles").innerHTML=(currentConstruction.attachments||[]).map((a,i)=>`<div class="attachment"><div class="fileicon">📎</div><div class="fname"><strong>${esc(a.name)}</strong><span>${Math.round((a.size||0)/1024)} Ko</span></div><button class="secondary small" onclick="downloadAttachment(currentConstruction.attachments[${i}])">Ouvrir</button><button class="danger small" onclick="currentConstruction.attachments.splice(${i},1);renderBuildFiles()">×</button></div>`).join("")||'<div class="muted">Aucun document.</div>'}
+async function saveConstruction(){currentConstruction.name=$("buildName").value.trim();currentConstruction.client=$("buildClient").value.trim();currentConstruction.start=$("buildStart").value;currentConstruction.target=$("buildTarget").value;currentConstruction.lead=$("buildLead").value.trim();currentConstruction.notes=$("buildNotes").value;currentConstruction.updated=new Date().toISOString();await put("constructions",currentConstruction);constructions=await getAll("constructions");alert("Suivi enregistré");openConstructionModule()}
+function openDocsModule(){["portal","home","editor","boats","construction","constructionEdit","docEdit"].forEach(id=>$(id)?.classList.add("hidden"));$("docs").classList.remove("hidden");renderDocs();window.scrollTo(0,0)}
+function blankDoc(){return {id:uid(),title:"",ref:"",equip:"",cat:"Notice",desc:"",attachments:[],updated:new Date().toISOString()}}
+function newDoc(){currentDoc=blankDoc();showDocEditor()}
+function showDocEditor(){["portal","home","editor","boats","construction","constructionEdit","docs"].forEach(id=>$(id)?.classList.add("hidden"));$("docEdit").classList.remove("hidden");renderDocEditor()}
+function renderDocs(){if(!$('docList'))return;const q=($('docSearch')?.value||'').toLowerCase();const arr=docs.filter(d=>(d.title+' '+d.ref+' '+d.equip+' '+d.cat+' '+d.desc).toLowerCase().includes(q));$('docList').innerHTML=arr.map(d=>`<div class="card notice-card" onclick="editDoc('${d.id}')"><div class="section-head"><h2>${esc(d.title||'Document sans titre')}</h2><span class="tag">${esc(d.cat||'Notice')}</span></div><p class="muted">${esc(d.ref||'')} ${d.equip?'· '+esc(d.equip):''}</p><p>${esc(d.desc||'')}</p><div class="muted">📎 ${(d.attachments||[]).length} pièce(s) jointe(s)</div></div>`).join('')||'<div class="card">Aucune notice ou procédure.</div>'}
+function editDoc(id){currentDoc=JSON.parse(JSON.stringify(docs.find(x=>x.id===id)));showDocEditor()}
+function renderDocEditor(){$('docTitle').value=currentDoc.title||'';$('docRef').value=currentDoc.ref||'';$('docEquip').value=currentDoc.equip||'';$('docCat').value=currentDoc.cat||'Notice';$('docDesc').value=currentDoc.desc||'';renderDocFiles()}
+async function addDocFiles(e){for(const f of [...e.target.files]){currentDoc.attachments=currentDoc.attachments||[];currentDoc.attachments.push({id:uid(),name:f.name,size:f.size,type:f.type,data:await fileToData(f)})}renderDocFiles();e.target.value=""}
+function renderDocFiles(){$('docFiles').innerHTML=(currentDoc.attachments||[]).map((a,i)=>`<div class="attachment"><div class="fileicon">📎</div><div class="fname"><strong>${esc(a.name)}</strong><span>${Math.round((a.size||0)/1024)} Ko</span></div><button class="secondary small" onclick="downloadAttachment(currentDoc.attachments[${i}])">Ouvrir</button><button class="danger small" onclick="currentDoc.attachments.splice(${i},1);renderDocFiles()">×</button></div>`).join('')||'<div class="muted">Aucun document.</div>'}
+async function saveDoc(){currentDoc.title=$('docTitle').value.trim();currentDoc.ref=$('docRef').value.trim();currentDoc.equip=$('docEquip').value.trim();currentDoc.cat=$('docCat').value;currentDoc.desc=$('docDesc').value;currentDoc.updated=new Date().toISOString();await put('docs',currentDoc);docs=await getAll('docs');alert('Notice enregistrée');openDocsModule()}
+async function exportAll(){reports=await getAll("reports");boats=await getAll("boats");const data={version:10,exported:new Date().toISOString(),reports,boats,constructions,docs};const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:"application/json"}));a.download="sauvegarde_rapports_intervention.json";a.click()}
+function importAll(e){const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=async()=>{try{const d=JSON.parse(rd.result);for(const r of d.reports||[])await put("reports",r);for(const b of d.boats||[])await put("boats",b);for(const c of d.constructions||[])await put("constructions",c);for(const x of d.docs||[])await put("docs",x);reports=await getAll("reports");boats=await getAll("boats");constructions=await getAll("constructions");docs=await getAll("docs");fillBoats();renderHome();renderDocs();alert("Sauvegarde restaurée")}catch{alert("Fichier de sauvegarde invalide")}};rd.readAsText(f)}
 if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 init();
 </script>
 <nav class="bottom-nav no-print" aria-label="Navigation principale">
-  <button class="active" onclick="goHome()"><span>⌂</span>Accueil</button>
-  <button onclick="newReport()"><span>＋</span>Nouveau</button>
-  <button onclick="showTodo()"><span>✓</span>À traiter</button>
-  <button onclick="openBoats()"><span>🚤</span>Bateaux</button>
+  <button class="active" onclick="portalHome()"><span>⌂</span>T.E.I</button>
+  <button onclick="openReportsModule()"><span>📋</span>Rapports</button>
+  <button onclick="openConstructionModule()"><span>🚢</span>Construction</button>
+  <button onclick="openDocsModule()"><span>📚</span>Notices</button>
 </nav>
 </body>
 </html>
